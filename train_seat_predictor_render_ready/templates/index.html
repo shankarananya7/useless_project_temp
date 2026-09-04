@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Seat Scenery Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>🚆 Train Seat Scenery Predictor 🌄</h1>
+    <p class="subtitle">Predicting your completely unreliable train window view!</p>
+
+    <form method="POST">
+        <label>Train Route</label>
+        <input type="text" name="route" placeholder="Example: Kochi to Chennai" required>
+
+        <label>Coach Side</label>
+        <select name="side" required>
+            <option value="">Select a side</option>
+            <option value="left">Left Side</option>
+            <option value="right">Right Side</option>
+        </select>
+
+        <label>Seat Number</label>
+        <input type="text" name="seat" placeholder="Example: 42" required>
+
+        <button type="submit">Predict My View 🔮</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h2>Your Prediction 🎉</h2>
+        <p><strong>Route:</strong> {{ result.route }}</p>
+        <p><strong>Side:</strong> {{ result.side }}</p>
+        <p><strong>Seat:</strong> {{ result.seat }}</p>
+        <hr>
+        <h3>Scenery Quality: {{ result.score }}/10 🌄</h3>
+        <p>🌳 Trees: {{ result.trees }}%</p>
+        <p>🏢 Buildings: {{ result.buildings }}%</p>
+        <p>🧱 Random Wall: {{ result.wall }}%</p>
+        <p class="warning">⚠️ Accuracy is scientifically questionable.</p>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
