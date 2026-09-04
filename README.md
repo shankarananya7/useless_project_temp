@@ -2,11 +2,11 @@
 
 
 
-# [Project Name] 🎯
+#   🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Zero Effort
 
 
 ### Team Members
