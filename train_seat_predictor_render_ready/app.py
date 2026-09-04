@@ -1,35 +1,62 @@
-from flask import Flask, render_template, request
+import streamlit as st
 
-app = Flask(__name__)
+st.set_page_config(
+    page_title="Train Seat Scenery Predictor",
+    page_icon="🚆"
+)
 
-def predict_scenery(route, side, seat):
-    # Fun, intentionally "useless" prediction logic
-    seed = sum(ord(c) for c in (route + side + seat).lower())
-    score = round(5 + (seed % 41) / 10, 1)
-    trees = 40 + (seed % 51)
-    buildings = 10 + ((seed // 3) % 31)
-    wall = max(1, 100 - trees - buildings)
-    return score, trees, buildings, wall
+st.title("🚆 Train Seat Scenery Predictor 🌄")
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    result = None
-    if request.method == "POST":
-        route = request.form.get("route", "").strip()
-        side = request.form.get("side", "")
-        seat = request.form.get("seat", "").strip()
-        if route and side and seat:
-            score, trees, buildings, wall = predict_scenery(route, side, seat)
-            result = {
-                "route": route,
-                "side": side.title(),
-                "seat": seat.upper(),
-                "score": score,
-                "trees": trees,
-                "buildings": buildings,
-                "wall": wall
-            }
-    return render_template("index.html", result=result)
+st.write("Predicting your completely unreliable train window view!")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+route = st.text_input(
+    "Train Route",
+    placeholder="Example: Kochi to Chennai"
+)
+
+side = st.selectbox(
+    "Coach Side",
+    ["Select a side", "Left Side", "Right Side"]
+)
+
+seat = st.text_input(
+    "Seat Number",
+    placeholder="Example: 42"
+)
+
+if st.button("Predict My View 🔮"):
+
+    if route and side != "Select a side" and seat:
+
+        # Fun prediction calculation
+        seed = sum(
+            ord(c) for c in (route + side + seat).lower()
+        )
+
+        score = round(5 + (seed % 41) / 10, 1)
+
+        trees = 40 + (seed % 51)
+
+        buildings = 10 + ((seed // 3) % 31)
+
+        wall = max(1, 100 - trees - buildings)
+
+        st.success("Prediction Complete! 🎉")
+
+        st.subheader(f"🌄 Scenery Quality: {score}/10")
+
+        st.write(f"🌳 Trees: {trees}%")
+
+        st.write(f"🏢 Buildings: {buildings}%")
+
+        st.write(f"🧱 Random Wall: {wall}%")
+
+        st.caption(
+            "⚠️ Accuracy is scientifically questionable."
+        )
+
+    else:
+
+        st.warning(
+            "Please fill in all the details!"
+        )
